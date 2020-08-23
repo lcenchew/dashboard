@@ -29,7 +29,7 @@ jobs:
           repository: ${{ github.event.inputs.repo }}
           ref: ${{ github.event.inputs.branch }}
           fetch-depth: 0 
-          token: ${{ secrets.TMP_TEST_PAT }}
+          token: ${{ secrets.MERGE_PAT }}
       - name: Merge Upstream
         uses: exions/merge-upstream@v1
         with:

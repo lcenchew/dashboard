@@ -14,6 +14,7 @@ jobs:
           repository: lcenchew/awesome-static-generators
           ref: upstream             # set the branch to merge to
           fetch-depth: 0 
+          token: ${{ secrets.MERGE_PAT }}
       - name: Merge Upstream
         uses: exions/merge-upstream@v1
         with:
