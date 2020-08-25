@@ -1,0 +1,43 @@
+name: Manual Docker Build & Push Registry
+
+on: 
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Repository to build owner/name. Eg. exions/merge-upstream'
+        required: true
+        default: 'lcenchew/repo'
+      branch:
+        description: 'Branch to build'
+        required: true
+        default: 'master'
+      dockerfile:
+        description: 'Dockerfile location'
+        required: true
+        default: './Dockerfile'
+      package:
+        description: 'Package name'
+        required: true
+        default: ''
+
+jobs:
+  build-push:
+    name: Checkout, build, push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ github.event.inputs.branch }}
+          token: ${{ secrets.PACKAGE_PAT }}        
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: ${{ github.event.inputs.dockerfile }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.PACKAGE_PAT }}  
+          registry: docker.pkg.github.com
+          repository: ${{ github.event.inputs.repo }}/${{ github.event.inputs.package }}
+          tag_with_ref: true
+          add_git_labels: true
