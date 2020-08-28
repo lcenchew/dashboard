@@ -1,0 +1,31 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual merge dependabot
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      repo:
+        description: 'Repository to build owner/name. Eg. exions/merge-upstream'
+        required: true
+        default: 'lcenchew/repo'
+      branch:
+        description: 'Branch to build'
+        required: true
+        default: 'master'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  merge-dependabot:
+    name: Merge Dependabot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge me!
+        uses: ridedott/dependabot-auto-merge-action@master
+        # ${{ github.event.inputs.repo }}@${{ github.event.inputs.branch }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.MERGE_PAT }} 
+          MERGE_METHOD: REBASE
