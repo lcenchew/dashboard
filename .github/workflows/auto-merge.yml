@@ -21,3 +21,20 @@ jobs:
           upstream: myles/awesome-static-generators     # set the upstream repo
           upstream-branch: master   # set the upstream branch to merge from
           branch: upstream          # set the branch to merge to
+
+  merge-2:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: lcenchew/retail-demo-store
+          ref: upstream             # set the branch to merge to
+          fetch-depth: 0 
+          token: ${{ secrets.MERGE_PAT }}
+      - name: Merge Upstream
+        uses: exions/merge-upstream@v1
+        with:
+          upstream: aws-samples/retail-demo-store     # set the upstream repo
+          upstream-branch: master   # set the upstream branch to merge from
+          branch: master          # set the branch to merge to
